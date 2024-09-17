@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="assets/css/feed.css">
 </head>
 <body>
+    <div class="header">
+        <div class="hamburger-menu" id="hamburger-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="menu" id="menu">
+            <button id="logout-btn">Sair</button>
+        </div>
+    </div>
+
+    <div id="post-feed" class="post-feed"></div>
+
     <div class="post-creator">
         <textarea id="post-input" placeholder="O que está acontecendo?" maxlength="280"></textarea>
         <div class="post-controls">
@@ -14,8 +27,6 @@
             <span id="char-count">0/280</span>
         </div>
     </div>
-    <div id="post-feed" class="post-feed"></div>
 
     <script src="assets/js/feed.js"></script>
 </body>
-</html>

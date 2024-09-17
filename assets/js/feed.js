@@ -50,3 +50,21 @@ window.onload = function() {
         alert(`Bem-vindo ao feed, ${loggedUser.name}!`);
     }
 };
+
+// Função de logout
+document.getElementById('logout-btn').addEventListener('click', function() {
+    localStorage.removeItem('user');
+    window.location.href = 'login.html';
+});
+
+// Função para mostrar/esconder o menu ao clicar no ícone hambúrguer
+document.getElementById('hamburger-menu').addEventListener('click', function() {
+    const menu = document.getElementById('menu');
+    if (menu.style.display === 'block') {
+        menu.style.display = 'none';
+    } else {
+        menu.style.display = 'block';
+    }
+});
+
+
