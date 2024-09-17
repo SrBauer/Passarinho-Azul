@@ -1,0 +1,136 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.left {
+    flex: 1;
+    background: linear-gradient(to bottom right, #1DA1F2, #009dff);
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.left .logo-large {
+    max-width: 200px;
+    margin-bottom: 20px;
+}
+
+.left .info {
+    list-style: none;
+}
+
+.left .info li {
+    margin: 15px 0;
+    font-size: 1.2rem;
+}
+
+.right {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container {
+    max-width: 300px;
+    width: 100%;
+}
+
+.form-container .logo-small {
+    width: 50px;
+    margin-bottom: 20px;
+}
+
+.form-container h1 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.form-container input {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.form-container button {
+    padding: 10px;
+    background-color: #1DA1F2;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background-color: #0d8ed8;
+}
+
+.form-container p {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.form-container a {
+    color: #1DA1F2;
+    text-decoration: none;
+}
+
+.form-container a:hover {
+    text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .left, .right {
+        flex: 1;
+        padding: 30px;
+    }
+
+    .left .logo-large {
+        width: 150px;
+    }
+
+    .form-container {
+        max-width: 100%;
+    }
+}
