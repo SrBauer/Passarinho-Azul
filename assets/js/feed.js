@@ -67,4 +67,114 @@ document.getElementById('hamburger-menu').addEventListener('click', function() {
     }
 });
 
+// Função para criar um post com nome do usuário, data e hora
+function createPost(postText, userName) {
+    const postFeed = document.getElementById('post-feed');
 
+    // Criando os elementos do post
+    const postItem = document.createElement('div');
+    postItem.classList.add('post-item');
+
+    const postHeader = document.createElement('div');
+    postHeader.classList.add('post-header');
+    
+    const postInfo = document.createElement('div');
+    postInfo.classList.add('post-info');
+    
+    const postDate = new Date().toLocaleString(); // Data e hora da postagem
+    postInfo.textContent = `${userName} - ${postDate}`;
+    
+    const postTextEl = document.createElement('p');
+    postTextEl.textContent = postText;
+    
+    postHeader.appendChild(postInfo);
+    
+    // Criando a seção de botões de ação (Curtir, Comentar)
+    const postActions = document.createElement('div');
+    postActions.classList.add('post-actions');
+    
+    const likeButton = document.createElement('button');
+    likeButton.textContent = 'Curtir';
+    let liked = false;
+
+    likeButton.addEventListener('click', () => {
+        liked = !liked;
+        likeButton.textContent = liked ? 'Descurtir' : 'Curtir';
+    });
+
+    const commentButton = document.createElement('button');
+    commentButton.textContent = 'Comentar';
+
+    commentButton.addEventListener('click', () => {
+        const commentSection = document.createElement('div');
+        commentSection.classList.add('comment-section');
+        
+        const commentInput = document.createElement('textarea');
+        commentInput.classList.add('comment-input');
+        commentInput.placeholder = 'Escreva um comentário...';
+
+        const submitCommentButton = document.createElement('button');
+        submitCommentButton.textContent = 'Enviar';
+        submitCommentButton.addEventListener('click', () => {
+            const commentText = document.createElement('p');
+            commentText.textContent = commentInput.value;
+            commentSection.appendChild(commentText);
+            commentInput.remove(); // Remove o input de comentário após o envio
+            submitCommentButton.remove(); // Remove o botão de envio após o comentário
+        });
+
+        commentSection.appendChild(commentInput);
+        commentSection.appendChild(submitCommentButton);
+        postItem.appendChild(commentSection);
+    });
+
+    postActions.appendChild(likeButton);
+    postActions.appendChild(commentButton);
+
+    // Montando o post e adicionando ao feed
+    postItem.appendChild(postHeader);
+    postItem.appendChild(postTextEl);
+    postItem.appendChild(postActions);
+
+    postFeed.appendChild(postItem);
+}
+
+// Função para criar o post quando o botão de postar for clicado
+document.getElementById('post-btn').addEventListener('click', function() {
+    const postInput = document.getElementById('post-input');
+    const userName = 'Jonathan Bauer'; // Você pode substituir por uma lógica para pegar o nome do usuário logado
+    const postText = postInput.value;
+
+    if (postText.trim() !== '') {
+        createPost(postText, userName);
+        postInput.value = ''; // Limpa o campo de texto após postar
+    } else {
+        alert('Escreva algo para postar.');
+    }
+});
+
+// Adiciona evento ao clicar no ícone de busca
+document.querySelector('.search-icon i').addEventListener('click', function() {
+    const searchInput = document.createElement('input');
+    searchInput.setAttribute('type', 'text');
+    searchInput.setAttribute('placeholder', 'Buscar usuários...');
+    searchInput.classList.add('search-input');
+
+    document.querySelector('.header').appendChild(searchInput);
+
+    // Ação ao pressionar Enter no campo de busca
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const searchValue = searchInput.value;
+            // Lógica de busca de usuários
+            searchUsers(searchValue);
+            searchInput.remove(); // Remove o campo de busca após a pesquisa
+        }
+    });
+});
+
+// Função para buscar usuários (exemplo, pode ser ajustada conforme seu backend)
+function searchUsers(query) {
+    console.log('Buscando usuário:', query);
+    // Adicione aqui sua lógica de busca de usuários
+}
