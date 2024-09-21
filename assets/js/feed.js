@@ -1,180 +1,178 @@
-document.getElementById('post-input').addEventListener('input', function() {
+// Contagem de caracteres e postagem
+document.getElementById('post-input').addEventListener('input', function () {
     const charCount = this.value.length;
     const charLimit = 280;
     document.getElementById('char-count').textContent = `${charCount}/${charLimit}`;
 });
 
-document.getElementById('post-btn').addEventListener('click', function() {
+document.getElementById('post-btn').addEventListener('click', function () {
     const postText = document.getElementById('post-input').value;
     if (postText) {
-        addPost(postText);
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        const userName = loggedInUser.username; // Pegar nome do usuário logado
+        createPost(postText, userName);
         document.getElementById('post-input').value = '';
-        document.getElementById('char-count').textContent = `0/280`;
+        document.getElementById('char-count').textContent = '0/280';
     }
 });
 
-function addPost(text) {
-    const postFeed = document.getElementById('post-feed');
-    const newPost = document.createElement('div');
-    newPost.className = 'post-item';
-    newPost.textContent = text;
-    postFeed.insertBefore(newPost, postFeed.firstChild);
-
-    // Save to localStorage
-    savePost(text);
-}
-
-function savePost(text) {
-    const posts = JSON.parse(localStorage.getItem('posts') || '[]');
-    posts.unshift(text);
-    localStorage.setItem('posts', JSON.stringify(posts));
-}
-
-function loadPosts() {
-    const posts = JSON.parse(localStorage.getItem('posts') || '[]');
-    posts.forEach(post => addPost(post));
-}
-
-window.onload = loadPosts;
-
-// Verificar se o usuário está logado
-window.onload = function() {
-    const user = localStorage.getItem('user');
-    
-    if (!user) {
-        alert('Você precisa estar logado para acessar o feed.');
-        window.location.href = 'login.html';
-    } else {
-        // Exibir o nome do usuário na tela do feed (opcional)
-        const loggedUser = JSON.parse(user);
-        alert(`Bem-vindo ao feed, ${loggedUser.name}!`);
-    }
-};
-
-// Função de logout
-document.getElementById('logout-btn').addEventListener('click', function() {
-    localStorage.removeItem('user');
-    window.location.href = 'login.html';
-});
-
-// Função para mostrar/esconder o menu ao clicar no ícone hambúrguer
-document.getElementById('hamburger-menu').addEventListener('click', function() {
-    const menu = document.getElementById('menu');
-    if (menu.style.display === 'block') {
-        menu.style.display = 'none';
-    } else {
-        menu.style.display = 'block';
-    }
-});
-
-// Função para criar um post com nome do usuário, data e hora
+// Criação da postagem
 function createPost(postText, userName) {
     const postFeed = document.getElementById('post-feed');
 
-    // Criando os elementos do post
     const postItem = document.createElement('div');
-    postItem.classList.add('post-item');
+    postItem.className = 'post-item';
 
     const postHeader = document.createElement('div');
-    postHeader.classList.add('post-header');
-    
+    postHeader.className = 'post-header';
+
     const postInfo = document.createElement('div');
-    postInfo.classList.add('post-info');
-    
-    const postDate = new Date().toLocaleString(); // Data e hora da postagem
+    postInfo.className = 'post-info';
+    const postDate = new Date().toLocaleString();
     postInfo.textContent = `${userName} - ${postDate}`;
-    
+
     const postTextEl = document.createElement('p');
     postTextEl.textContent = postText;
-    
-    postHeader.appendChild(postInfo);
-    
-    // Criando a seção de botões de ação (Curtir, Comentar)
-    const postActions = document.createElement('div');
-    postActions.classList.add('post-actions');
-    
-    const likeButton = document.createElement('button');
-    likeButton.textContent = 'Curtir';
-    let liked = false;
 
-    likeButton.addEventListener('click', () => {
-        liked = !liked;
-        likeButton.textContent = liked ? 'Descurtir' : 'Curtir';
+    const postActions = document.createElement('div');
+    postActions.className = 'post-actions';
+
+    // Contador de likes, dislikes e comentários
+    let likeCount = 0;
+    let dislikeCount = 0;
+    let commentCount = 0;
+
+    // Botões de like, dislike e comentar
+    const likeButton = document.createElement('img');
+    likeButton.src = 'assets/img/gostar.png';
+    likeButton.className = 'icon like-icon';
+    const likeCounter = document.createElement('span');
+    likeCounter.textContent = likeCount;
+
+    const dislikeButton = document.createElement('img');
+    dislikeButton.src = 'assets/img/nao-gosto.png';
+    dislikeButton.className = 'icon dislike-icon';
+    const dislikeCounter = document.createElement('span');
+    dislikeCounter.textContent = dislikeCount;
+
+    const commentButton = document.createElement('img');
+    commentButton.src = 'assets/img/comente.png';
+    commentButton.className = 'icon comment-icon';
+    const commentCounter = document.createElement('span');
+    //commentCounter.textContent = commentCount;
+
+    // Ações ao clicar nos botões
+    likeButton.addEventListener('click', function () {
+        likeCount++;
+        likeCounter.textContent = likeCount;
     });
 
-    const commentButton = document.createElement('button');
-    commentButton.textContent = 'Comentar';
+    dislikeButton.addEventListener('click', function () {
+        dislikeCount++;
+        dislikeCounter.textContent = dislikeCount;
+    });
 
-    commentButton.addEventListener('click', () => {
-        const commentSection = document.createElement('div');
-        commentSection.classList.add('comment-section');
-        
-        const commentInput = document.createElement('textarea');
-        commentInput.classList.add('comment-input');
-        commentInput.placeholder = 'Escreva um comentário...';
-
-        const submitCommentButton = document.createElement('button');
-        submitCommentButton.textContent = 'Enviar';
-        submitCommentButton.addEventListener('click', () => {
-            const commentText = document.createElement('p');
-            commentText.textContent = commentInput.value;
-            commentSection.appendChild(commentText);
-            commentInput.remove(); // Remove o input de comentário após o envio
-            submitCommentButton.remove(); // Remove o botão de envio após o comentário
-        });
-
-        commentSection.appendChild(commentInput);
-        commentSection.appendChild(submitCommentButton);
-        postItem.appendChild(commentSection);
+    commentButton.addEventListener('click', function () {
+        const commentBox = createCommentBox(postItem);
+        postItem.appendChild(commentBox);
     });
 
     postActions.appendChild(likeButton);
+    postActions.appendChild(likeCounter);
+    postActions.appendChild(dislikeButton);
+    postActions.appendChild(dislikeCounter);
     postActions.appendChild(commentButton);
+    postActions.appendChild(commentCounter);
 
-    // Montando o post e adicionando ao feed
+    postHeader.appendChild(postInfo);
     postItem.appendChild(postHeader);
     postItem.appendChild(postTextEl);
     postItem.appendChild(postActions);
 
-    postFeed.appendChild(postItem);
+    postFeed.insertBefore(postItem, postFeed.firstChild);
 }
 
-// Função para criar o post quando o botão de postar for clicado
-document.getElementById('post-btn').addEventListener('click', function() {
-    const postInput = document.getElementById('post-input');
-    const userName = 'Jonathan Bauer'; // Você pode substituir por uma lógica para pegar o nome do usuário logado
-    const postText = postInput.value;
+// Função para criar o campo de comentário com botão de fechar
+function createCommentBox(postItem) {
+    const commentBox = document.createElement('div');
+    commentBox.className = 'comment-box';
 
-    if (postText.trim() !== '') {
-        createPost(postText, userName);
-        postInput.value = ''; // Limpa o campo de texto após postar
+    // Botão de fechar "X"
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'X';
+    closeButton.className = 'close-btn';
+
+    // Ação do botão de fechar
+    closeButton.addEventListener('click', function () {
+        commentBox.remove(); // Remove a caixa de comentário
+    });
+
+    const commentInput = document.createElement('textarea');
+    commentInput.placeholder = 'Escreva um comentário...';
+    commentInput.className = 'comment-input';
+
+    const commentButton = document.createElement('button');
+    commentButton.textContent = 'Comentar';
+    commentButton.className = 'comment-btn';
+
+    commentButton.addEventListener('click', function () {
+        const commentText = commentInput.value;
+        if (commentText) {
+            addCommentToPost(postItem, commentText);
+            commentInput.value = ''; // Limpa o campo de comentário após enviar
+            commentBox.remove(); // Fecha a caixa de comentário após enviar
+        }
+    });
+
+    // Adicionando o botão de fechar "X" à caixa de comentário
+    commentBox.appendChild(closeButton);
+    commentBox.appendChild(commentInput);
+    commentBox.appendChild(commentButton);
+
+    return commentBox;
+}
+
+// Função para adicionar o comentário à postagem
+function addCommentToPost(postItem, commentText) {
+    const commentSection = postItem.querySelector('.comment-section') || document.createElement('div');
+    commentSection.className = 'comment-section';
+
+    const commentItem = document.createElement('div');
+    commentItem.className = 'comment-item';
+    commentItem.textContent = commentText;
+
+    commentSection.appendChild(commentItem);
+    postItem.appendChild(commentSection);
+}
+
+// Verificar se há usuário logado ao carregar a página
+document.addEventListener('DOMContentLoaded', function () {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+    if (!loggedInUser) {
+        window.location.href = 'login.html'; // Redireciona para login se não estiver logado
     } else {
-        alert('Escreva algo para postar.');
+        console.log('Usuário logado:', loggedInUser.username);
     }
 });
 
-// Adiciona evento ao clicar no ícone de busca
-document.querySelector('.search-icon i').addEventListener('click', function() {
-    const searchInput = document.createElement('input');
-    searchInput.setAttribute('type', 'text');
-    searchInput.setAttribute('placeholder', 'Buscar usuários...');
-    searchInput.classList.add('search-input');
-
-    document.querySelector('.header').appendChild(searchInput);
-
-    // Ação ao pressionar Enter no campo de busca
-    searchInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            const searchValue = searchInput.value;
-            // Lógica de busca de usuários
-            searchUsers(searchValue);
-            searchInput.remove(); // Remove o campo de busca após a pesquisa
-        }
-    });
+// Logout
+document.getElementById('logout-btn').addEventListener('click', function () {
+    localStorage.removeItem('loggedInUser'); // Remove apenas o usuário logado
+    window.location.href = 'login.html'; // Redireciona para a tela de login
 });
 
-// Função para buscar usuários (exemplo, pode ser ajustada conforme seu backend)
-function searchUsers(query) {
-    console.log('Buscando usuário:', query);
-    // Adicione aqui sua lógica de busca de usuários
-}
+// Menu hambúrguer
+document.getElementById('hamburger-menu').addEventListener('click', function () {
+    const menu = document.getElementById('menu');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+});
+
+// Notificações e Minhas Publicações
+document.getElementById('notifications').addEventListener('click', function () {
+    alert('Nenhuma notificação no momento.');
+});
+
+document.getElementById('my-posts').addEventListener('click', function () {
+    alert('Exibindo suas publicações.');
+});

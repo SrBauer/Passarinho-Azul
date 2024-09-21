@@ -5,12 +5,16 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // Buscar os dados do usuário armazenados no localStorage
-    const storedUser = JSON.parse(localStorage.getItem('user'));
+    // Buscar a lista de usuários armazenados no localStorage
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
 
-    // Verificar se o email e senha correspondem aos dados do usuário cadastrado
-    if (storedUser && storedUser.email === email && storedUser.password === password) {
-        alert(`Bem-vindo de volta, ${storedUser.name}!`);
+    // Verificar se há algum usuário com o email e senha correspondentes
+    const foundUser = storedUsers.find(user => user.email === email && user.password === password);
+
+    if (foundUser) {
+        // Armazenar o usuário logado no localStorage
+        localStorage.setItem('loggedInUser', JSON.stringify(foundUser));
+        alert(`Bem-vindo de volta, ${foundUser.name}!`);
         window.location.href = 'feed.html';  // Redirecionar para a página do feed
     } else {
         alert('Email ou senha incorretos. Tente novamente.');

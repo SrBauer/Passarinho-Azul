@@ -1,56 +1,45 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feed - Passarinho Azul</title>
     <link rel="stylesheet" href="assets/css/feed.css">
 </head>
+
 <body>
     <div class="header">
-        <div class="menu-icon">
+        <div class="menu-icon" id="hamburger-menu">
             <!-- Ícone do menu hambúrguer -->
             <img src="assets/img/barra-de-menu.png" alt="Menu" class="icon">
+            <div class="menu" id="menu">
+                <ul>
+                    <li><a href="#" id="notifications">Notificações</a></li>
+                    <li><a href="#" id="my-posts">Minhas Publicações</a></li>
+                    <li><a href="#" id="logout-btn">Sair</a></li>
+                </ul>
+            </div>
         </div>
-    
+
         <div class="logo-center">
             <!-- Ícone da logo centralizado -->
             <img src="assets/img/gaio-azul.png" alt="Logo Passarinho Azul" class="logo-img">
         </div>
-    
-        <div class="search-icon">
-            <!-- Ícone de busca -->
-            <img src="assets/img/procurar.png" alt="Buscar" class="icon">
-        </div>
+
     </div>
-    
-    <!-- Caixa de post e ações -->
-    <div class="post-item">
-        <p><strong>Nome do usuário</strong> - <span>Data e Hora</span></p>
-        <p>Conteúdo do post aqui...</p>
-    
-        <div class="post-actions">
-            <!-- Ícone de curtir -->
-            <img src="like-icon.png" alt="Curtir" class="icon like-icon">
-            
-            <!-- Ícone de descurtir -->
-            <img src="dislike-icon.png" alt="Descurtir" class="icon dislike-icon">
-            
-            <!-- Ícone de comentar -->
-            <img src="comment-icon.png" alt="Comentar" class="icon comment-icon">
-        </div>
-    </div>
-    
 
     <div id="post-feed" class="post-feed"></div>
 
     <div class="post-creator">
-        <textarea id="post-input" placeholder="O que está acontecendo?" maxlength="280"></textarea>
+        <textarea id="post-input" placeholder="O que está acontecendo?" maxlength="300"></textarea>
         <div class="post-controls">
             <button id="post-btn">Postar</button>
-            <span id="char-count">0/280</span>
+            <span id="char-count">0/300</span>
         </div>
     </div>
 
     <script src="assets/js/feed.js"></script>
 </body>
+
+</html>

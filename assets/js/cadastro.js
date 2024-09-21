@@ -1,6 +1,21 @@
-// Função para salvar os dados do usuário no localStorage
-function saveUser(user) {
-    localStorage.setItem('user', JSON.stringify(user));
+// Função para salvar os dados do usuário no localStorage 
+function saveUser(newUser) {
+    // Recuperar a lista de usuários já cadastrados, ou criar uma nova lista vazia
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+
+    // Verificar se o email já está cadastrado
+    const userExists = users.some(user => user.email === newUser.email);
+
+    if (userExists) {
+        alert('Este email já está cadastrado. Por favor, faça login.');
+        return;
+    }
+
+    // Adicionar o novo usuário à lista
+    users.push(newUser);
+
+    // Salvar a lista de usuários atualizada no localStorage
+    localStorage.setItem('users', JSON.stringify(users));
 }
 
 // Função para capturar os dados do formulário de cadastro
@@ -18,15 +33,15 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
     }
 
     // Criar objeto do usuário
-    const user = {
+    const newUser = {
         name: name,
         email: email,
         password: password
     };
 
     // Salvar os dados do usuário no localStorage
-    saveUser(user);
+    saveUser(newUser);
 
-    // Redirecionar para a página do feed
-    window.location.href = 'feed.html';
+    // Redirecionar para a página de login após cadastro
+    window.location.href = 'login.html';
 });
