@@ -134,15 +134,18 @@ function createCommentBox(postItem) {
 
 // Função para adicionar o comentário à postagem
 function addCommentToPost(postItem, commentText) {
-    const commentSection = postItem.querySelector('.comment-section') || document.createElement('div');
-    commentSection.className = 'comment-section';
+    let commentSection = postItem.querySelector('.comment-section');
+    if (!commentSection) {
+        commentSection = document.createElement('div');
+        commentSection.className = 'comment-section';
+        postItem.appendChild(commentSection);
+    }
 
     const commentItem = document.createElement('div');
     commentItem.className = 'comment-item';
     commentItem.textContent = commentText;
 
     commentSection.appendChild(commentItem);
-    postItem.appendChild(commentSection);
 }
 
 // Verificar se há usuário logado ao carregar a página
@@ -176,3 +179,26 @@ document.getElementById('notifications').addEventListener('click', function () {
 document.getElementById('my-posts').addEventListener('click', function () {
     alert('Exibindo suas publicações.');
 });
+
+// Função para alternar o modo escuro
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    
+    // Salvar a preferência do usuário no localStorage
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    localStorage.setItem('darkMode', isDarkMode);
+}
+
+// Verificar e aplicar a preferência do usuário ao carregar a página
+document.addEventListener('DOMContentLoaded', function() {
+    const darkModePreference = localStorage.getItem('darkMode');
+    
+    if (darkModePreference === 'true') {
+        document.body.classList.add('dark-mode');
+    }
+    
+    // ... código existente de verificação de login ...
+});
+
+// Adicionar evento de clique ao botão de modo escuro
+document.getElementById('dark-mode-toggle').addEventListener('click', toggleDarkMode);
