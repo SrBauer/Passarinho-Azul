@@ -1,3 +1,16 @@
+// Função para verificar e aplicar o modo escuro
+function applyDarkMode() {
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+}
+
+// Aplicar o modo escuro ao carregar a página
+document.addEventListener('DOMContentLoaded', applyDarkMode);
+
 // Função para verificar se o usuário está cadastrado
 document.getElementById('login-form').addEventListener('submit', function(e) {
     e.preventDefault();

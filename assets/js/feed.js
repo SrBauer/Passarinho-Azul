@@ -166,9 +166,24 @@ document.getElementById('logout-btn').addEventListener('click', function () {
 });
 
 // Menu hambúrguer
-document.getElementById('hamburger-menu').addEventListener('click', function () {
-    const menu = document.getElementById('menu');
+const hamburgerMenu = document.getElementById('hamburger-menu');
+const menu = document.getElementById('menu');
+
+hamburgerMenu.addEventListener('click', function(event) {
+    event.stopPropagation();
     menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+});
+
+// Fechar o menu ao clicar fora dele
+document.addEventListener('click', function(event) {
+    if (!hamburgerMenu.contains(event.target) && !menu.contains(event.target)) {
+        menu.style.display = 'none';
+    }
+});
+
+// Prevenir que o menu feche ao clicar dentro dele
+menu.addEventListener('click', function(event) {
+    event.stopPropagation();
 });
 
 // Notificações e Minhas Publicações

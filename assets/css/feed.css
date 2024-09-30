@@ -45,31 +45,63 @@ img {
 /* Menu */
 .menu-icon {
     position: relative;
+    cursor: pointer;
 }
 
 .menu {
     display: none;
     position: absolute;
-    top: 40px;
+    top: 50px;
     left: 0;
     background-color: white;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    min-width: 200px;
+    z-index: 1001;
 }
 
 .menu ul {
     list-style: none;
-    padding: 10px;
+    padding: 0;
     margin: 0;
 }
 
 .menu ul li {
-    margin-bottom: 10px;
+    padding: 0;
 }
 
 .menu ul li a {
     color: #333;
     text-decoration: none;
+    padding: 12px 16px;
+    display: block;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.menu ul li a img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.menu ul li a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Dark mode styles for menu */
+body.dark-mode .menu {
+    background-color: #22303c;
+    box-shadow: 0px 8px 16px 0px rgba(255,255,255,0.1);
+}
+
+body.dark-mode .menu ul li a {
+    color: #ffffff;
+}
+
+body.dark-mode .menu ul li a:hover {
+    background-color: #38444d;
 }
 
 /* Post feed */
