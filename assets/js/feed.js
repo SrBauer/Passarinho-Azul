@@ -195,25 +195,15 @@ document.getElementById('my-posts').addEventListener('click', function () {
     alert('Exibindo suas publicações.');
 });
 
-// Função para alternar o modo escuro
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    
-    // Salvar a preferência do usuário no localStorage
-    const isDarkMode = document.body.classList.contains('dark-mode');
-    localStorage.setItem('darkMode', isDarkMode);
-}
+// Importar as funções do DarkMode.js
+import { toggleDarkMode, applyDarkMode } from './DarkMode.js';
 
-// Verificar e aplicar a preferência do usuário ao carregar a página
+// Substituir a função toggleDarkMode existente pela importada
+document.getElementById('dark-mode-toggle').addEventListener('click', toggleDarkMode);
+
+// Aplicar o modo escuro ao carregar a página
 document.addEventListener('DOMContentLoaded', function() {
-    const darkModePreference = localStorage.getItem('darkMode');
-    
-    if (darkModePreference === 'true') {
-        document.body.classList.add('dark-mode');
-    }
+    applyDarkMode();
     
     // ... código existente de verificação de login ...
 });
-
-// Adicionar evento de clique ao botão de modo escuro
-document.getElementById('dark-mode-toggle').addEventListener('click', toggleDarkMode);

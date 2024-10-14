@@ -1,12 +1,5 @@
-// Função para verificar e aplicar o modo escuro
-function applyDarkMode() {
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
-    if (isDarkMode) {
-        document.body.classList.add('dark-mode');
-    } else {
-        document.body.classList.remove('dark-mode');
-    }
-}
+// Importar a função applyDarkMode do DarkMode.js
+import { applyDarkMode } from './DarkMode.js';
 
 // Aplicar o modo escuro ao carregar a página
 document.addEventListener('DOMContentLoaded', applyDarkMode);

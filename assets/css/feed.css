@@ -66,18 +66,13 @@ img {
     margin: 0;
 }
 
-.menu ul li {
-    padding: 0;
-}
-
 .menu ul li a {
     color: #333;
     text-decoration: none;
     padding: 12px 16px;
-    display: block;
-    transition: background-color 0.3s;
     display: flex;
     align-items: center;
+    transition: background-color 0.3s;
 }
 
 .menu ul li a img {
@@ -88,20 +83,6 @@ img {
 
 .menu ul li a:hover {
     background-color: #f1f1f1;
-}
-
-/* Dark mode styles for menu */
-body.dark-mode .menu {
-    background-color: #22303c;
-    box-shadow: 0px 8px 16px 0px rgba(255,255,255,0.1);
-}
-
-body.dark-mode .menu ul li a {
-    color: #ffffff;
-}
-
-body.dark-mode .menu ul li a:hover {
-    background-color: #38444d;
 }
 
 /* Post feed */
@@ -326,4 +307,17 @@ body.dark-mode .comment-btn:hover {
 
 body.dark-mode .comment-item {
     border-color: #38444d;
+}
+
+body.dark-mode .menu {
+    background-color: #22303c;
+    box-shadow: 0px 8px 16px 0px rgba(255,255,255,0.1);
+}
+
+body.dark-mode .menu ul li a {
+    color: #ffffff;
+}
+
+body.dark-mode .menu ul li a:hover {
+    background-color: #38444d;
 }
