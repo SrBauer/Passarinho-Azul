@@ -63,12 +63,32 @@ function createPost(postText, userName) {
 
     // Ações ao clicar nos botões
     likeButton.addEventListener('click', function () {
-        likeCount++;
+        if (likeButton.classList.contains('active')) {
+            likeCount--;
+            likeButton.classList.remove('active');
+        } else {
+            likeCount++;
+            likeButton.classList.add('active');
+            if (dislikeButton.classList.contains('active')) {
+                dislikeCount--;
+                dislikeButton.classList.remove('active');
+            }
+        }
         likeCounter.textContent = likeCount;
     });
 
     dislikeButton.addEventListener('click', function () {
-        dislikeCount++;
+        if (dislikeButton.classList.contains('active')) {
+            dislikeCount--;
+            dislikeButton.classList.remove('active');
+        } else {
+            dislikeCount++;
+            dislikeButton.classList.add('active');
+            if (likeButton.classList.contains('active')) {
+                likeCount--;
+                likeButton.classList.remove('active');
+            }
+        }
         dislikeCounter.textContent = dislikeCount;
     });
 
@@ -90,6 +110,17 @@ function createPost(postText, userName) {
     postItem.appendChild(postActions);
 
     postFeed.insertBefore(postItem, postFeed.firstChild);
+
+    const post = {
+        text: postText,
+        user: userName,
+        date: new Date().toLocaleString(),
+        likes: 0,
+        dislikes: 0,
+        comments: []
+    };
+
+    userPosts.push(post);
 }
 
 // Função para criar o campo de comentário com botão de fechar
@@ -192,7 +223,7 @@ document.getElementById('notifications').addEventListener('click', function () {
 });
 
 document.getElementById('my-posts').addEventListener('click', function () {
-    alert('Exibindo suas publicações.');
+    showUserPosts();
 });
 
 // Importar as funções do DarkMode.js
@@ -204,6 +235,35 @@ document.getElementById('dark-mode-toggle').addEventListener('click', toggleDark
 // Aplicar o modo escuro ao carregar a página
 document.addEventListener('DOMContentLoaded', function() {
     applyDarkMode();
-    
-    // ... código existente de verificação de login ...
 });
+
+function showUserPosts() {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    const userPostsFeed = document.getElementById('post-feed');
+    userPostsFeed.innerHTML = ''; // Limpa o feed atual
+
+    const userPostsFiltered = userPosts.filter(post => post.user === loggedInUser.username);
+
+    if (userPostsFiltered.length === 0) {
+        const noPostsMessage = document.createElement('p');
+        noPostsMessage.textContent = 'Você ainda não fez nenhuma publicação.';
+        userPostsFeed.appendChild(noPostsMessage);
+    } else {
+        userPostsFiltered.forEach(post => {
+            const postItem = document.createElement('div');
+            postItem.className = 'post-item';
+            postItem.innerHTML = `
+                <div class="post-header">
+                    <div class="post-info">${post.user} - ${post.date}</div>
+                </div>
+                <p>${post.text}</p>
+                <div class="post-actions">
+                    <span>Likes: ${post.likes}</span>
+                    <span>Dislikes: ${post.dislikes}</span>
+                    <span>Comentários: ${post.comments.length}</span>
+                </div>
+            `;
+            userPostsFeed.appendChild(postItem);
+        });
+    }
+}
