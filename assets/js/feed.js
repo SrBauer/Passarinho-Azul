@@ -1,3 +1,20 @@
+// Adicione este teste no início do arquivo
+try {
+    localStorage.setItem('teste', 'teste');
+    console.log('localStorage está funcionando');
+    localStorage.removeItem('teste');
+} catch (error) {
+    console.error('Erro no localStorage:', error);
+}
+
+// Adicione esta linha no início do arquivo, antes de qualquer função
+let userPosts = JSON.parse(localStorage.getItem('userPosts')) || [];
+
+// Adicione este console.log para debug
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Posts carregados:', userPosts);
+});
+
 // Contagem de caracteres e postagem
 document.getElementById('post-input').addEventListener('input', function () {
     const charCount = this.value.length;
@@ -112,6 +129,7 @@ function createPost(postText, userName) {
     postFeed.insertBefore(postItem, postFeed.firstChild);
 
     const post = {
+        id: Date.now(),
         text: postText,
         user: userName,
         date: new Date().toLocaleString(),
@@ -121,8 +139,10 @@ function createPost(postText, userName) {
     };
 
     userPosts.push(post);
-}
+    savePostsToLocalStorage();
 
+    postItem.dataset.postId = post.id;
+}
 // Função para criar o campo de comentário com botão de fechar
 function createCommentBox(postItem) {
     const commentBox = document.createElement('div');
@@ -177,6 +197,22 @@ function addCommentToPost(postItem, commentText) {
     commentItem.textContent = commentText;
 
     commentSection.appendChild(commentItem);
+
+    const postId = postItem.dataset.postId;
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    
+    const comment = {
+        id: Date.now(),
+        text: commentText,
+        user: loggedInUser.username,
+        date: new Date().toLocaleString()
+    };
+
+    const post = userPosts.find(p => p.id === parseInt(postId));
+    if (post) {
+        post.comments.push(comment);
+        savePostsToLocalStorage();
+    }
 }
 
 // Verificar se há usuário logado ao carregar a página
@@ -240,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function showUserPosts() {
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     const userPostsFeed = document.getElementById('post-feed');
-    userPostsFeed.innerHTML = ''; // Limpa o feed atual
+    userPostsFeed.innerHTML = '';
 
     const userPostsFiltered = userPosts.filter(post => post.user === loggedInUser.username);
 
@@ -267,3 +303,43 @@ function showUserPosts() {
         });
     }
 }
+
+// Adicionar nova função para salvar no localStorage
+function savePostsToLocalStorage() {
+    localStorage.setItem('userPosts', JSON.stringify(userPosts));
+}
+
+// Adicione esta função para mostrar todas as postagens
+function showAllPosts() {
+    const postFeed = document.getElementById('post-feed');
+    postFeed.innerHTML = '';
+    
+    if (userPosts.length === 0) {
+        const noPostsMessage = document.createElement('p');
+        noPostsMessage.textContent = 'Nenhuma publicação encontrada.';
+        postFeed.appendChild(noPostsMessage);
+    } else {
+        userPosts.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(post => {
+            const postItem = document.createElement('div');
+            postItem.className = 'post-item';
+            postItem.innerHTML = `
+                <div class="post-header">
+                    <div class="post-info">${post.user} - ${post.date}</div>
+                </div>
+                <p>${post.text}</p>
+                <div class="post-actions">
+                    <span>Likes: ${post.likes}</span>
+                    <span>Dislikes: ${post.dislikes}</span>
+                    <span>Comentários: ${post.comments.length}</span>
+                </div>
+            `;
+            postFeed.appendChild(postItem);
+        });
+    }
+}
+
+// Adicione este evento de clique para a logo
+document.querySelector('.logo-img').addEventListener('click', function() {
+    showAllPosts();
+});
+
