@@ -18,6 +18,27 @@ function saveUser(newUser) {
     localStorage.setItem('users', JSON.stringify(users));
 }
 
+// Função para validar a senha
+function validatePassword(password) {
+    const minLength = 8;
+    const specialChars = /[!@#$%^&*(),.?":{}|<>]/; // Regex para caracteres especiais
+    const weakPasswords = ['12345678', 'password', 'qwerty', 'abc123']; // Exemplo de senhas fracas
+
+    if (password.length < minLength) {
+        alert('A senha deve ter pelo menos 8 caracteres.');
+        return false;
+    }
+    if (!specialChars.test(password)) {
+        alert('A senha deve conter pelo menos um caractere especial.');
+        return false;
+    }
+    if (weakPasswords.includes(password)) {
+        alert('A senha é muito fraca. Por favor, escolha outra.');
+        return false;
+    }
+    return true;
+}
+
 // Função para capturar os dados do formulário de cadastro
 document.getElementById('signup-form').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -30,6 +51,11 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
     if (!name || !email || !password) {
         alert('Por favor, preencha todos os campos.');
         return;
+    }
+
+    // Validar a senha
+    if (!validatePassword(password)) {
+        return; // Se a senha não for válida, não prosseguir
     }
 
     // Criar objeto do usuário

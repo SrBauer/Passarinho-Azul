@@ -15,7 +15,7 @@ body {
 
 .container {
     display: flex;
-    width: 100%;
+    width: 85%;
     max-width: 1200px;
     background-color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -133,4 +133,28 @@ body {
     .form-container {
         max-width: 100%;
     }
+}
+
+/* Adicione este estilo para o ícone de olho */
+.password-container {
+        position: relative;
+}
+
+.password-container input {
+    padding-right: 40px;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    pointer-events: auto;
+}
+
+.eye-icon.active {
+    opacity: 0.7;
 }

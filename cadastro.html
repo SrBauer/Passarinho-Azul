@@ -22,10 +22,13 @@
             <div class="form-container">
                 <img src="assets/img/gaio-azul.png" alt="Logo Passarinho Azul" class="logo-small">
                 <h1>Cadastre-se no Passarinho Azul</h1>
-                <form id="signup-form" action="#" >
+                <form id="signup-form" action="#">
                     <input type="text" id="name" placeholder="Nome Completo" required>
                     <input type="email" id="email" placeholder="Email" required>
-                    <input type="password" id="password" placeholder="Senha" required>
+                    <div class="password-container">
+                        <input type="password" id="password" placeholder="Senha" required>
+                        <img src="assets/img/olho.png" alt="Mostrar Senha" id="toggle-password" class="eye-icon">
+                    </div>
                     <button type="submit">Cadastrar</button>
                 </form>
                 <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
@@ -33,7 +36,17 @@
         </div>
     </div>
     <script src="assets/js/cadastro.js"></script>
+    <script>
+        // Script para alternar a visibilidade da senha
+        const togglePassword = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('password');
 
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('active');
+        });
+    </script>
 </body>
 
 </html>
